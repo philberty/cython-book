@@ -1,0 +1,3 @@
+cimport cpycode
+
+myFunc ()

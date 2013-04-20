@@ -1,0 +1,5 @@
+This is tmux from: http://sourceforge.net/projects/tmux
+
+All code is from there and licensed under their license. Cython book additions
+are licensed under the same just to be safe. But you can do whatever you fancy
+its a small amount of code really.

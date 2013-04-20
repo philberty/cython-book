@@ -1,0 +1,80 @@
+#+TITLE:     README.org
+#+AUTHOR:    Philip Herron
+#+EMAIL:     redbrain@gcc.gnu.org
+#+DATE:      2013-06-04 Tue
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+XSLT:
+
+* Learning Cython README
+These are all the cython code examples used within the book for easy
+reference and for me to be able to maintain these in the future. To
+keep not only the book relevant but the code aswell.
+
+Here are some useful links to relevant links that you would care about.
+
+-Cython: http://www.cython.org/
+-Cython Official Reference: http://docs.cython.org/
+-Cython Wiki: http://wiki.cython.org/
+-Special Thanks to: http://www.packtpub.com/
+-Author Blog: http://redbrain.co.uk/
+
+** Chapter 1 Intro
+Deals with just hello world and a simple walk through of your own
+module from scratch!
+
+** Chatper 2 Cdef and mixing C/Python
+Here things get more interesting with reusing:
+- Python ConfigParser
+- Python logging
+To extend new C projects to get them up and running FAST
+
+Then iterating over the cdef usage as a reference and the cython
+public keyword usage and how to handle the new header file.
+
+*** Messaging Server
+Finally a fairly quick and hacky messaging server written in an hour
+in C and Cython using libevent over simple Sockets. Demonstrates how
+to get the most of cython to extend existing systems.
+
+** Chapter 3 Cython Conventions 
+There are 3 parts to this chapter firstly on how to use cython to
+generate Python'esque classes for your C/C++ types with respect to
+Memory Management.
+
+*** Memory
+Such as the __dealloc__ hook when python GC
+decides to delete your objects. As well as using malloc/sizeof etc
+from cython in the __cinit__ and __str__ hooks to make it really feel
+like just any normal python code.
+
+*** Speed
+Using cython to simply compile your python code to get speed ups in
+number crunching in the primes example from cython compared to a
+plain nearly word for word match in pure python
+
+*** Extending Tmux
+Extending existing Open Source projects using pure Cython instead of
+using C!
+
+** Chapter 4 Caveats and Debugging
+This chapter deals with some caveats in Type Conversion you might
+come across and how to use cygdb on your code.
+
+** Chapter 5 Advanced Cython
+Advanced topics with cython include using C++ with cython and how to
+interface with that. And a little intro on how to worry about the GIL
+releated to threading. And finally 2 more examples on how you could
+extend systems with cython.
+
+** Chapter 6 Cython extra's
+Rounding off the book with a discussion on Python 3 and PyPy. And a
+quick look at the Auto PXD tools for cython that are available.

@@ -1,0 +1,10 @@
+For this example to work you will need to install twisted:
+
+http://twistedmatrix.com/trac/wiki/Downloads
+
+If your using mac-osx use:
+
+$ sudo port install libevent
+
+# assumes you have ports installed to default location /opt/local
+$ make -f Makefile.mac-ports
