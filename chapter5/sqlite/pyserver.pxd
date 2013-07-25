@@ -7,4 +7,4 @@ cdef extern from "server.h":
   void setConnect_PyCallback (callback)
   void setDisconnect_PyCallback (callback)
   void setRead_PyCallback (callback)
-  void init_server (int)
+  void init_server (int) nogil

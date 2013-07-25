@@ -1,3 +1,5 @@
+#include <Python.h>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -41,6 +43,14 @@ void setRead_PyCallback (callback c)
   readcb = c;
 }
 
+
+static
+void sigint_cb (int fd, short event, void *arg)
+{
+  struct event_base *base = arg;
+  event_base_loopbreak (base);
+}
+
 int setnonblock (int fd)
 {
   int flags;
@@ -69,7 +79,9 @@ callback_client_read (struct bufferevent *bev, void *arg)
       n = bufferevent_read (bev, data, sizeof (data));
       if (n <= 0)
 	break;
+      PyGILState_STATE gilstate_save = PyGILState_Ensure();
       readcb (client, (char *)data);
+      PyGILState_Release(gilstate_save);
     }
 }
 void callback_client_error (struct bufferevent *bev, short what, void *arg)
@@ -84,7 +96,9 @@ void callback_client_error (struct bufferevent *bev, short what, void *arg)
   else
     warn("Client socket error, disconnecting.\n");
 
+  PyGILState_STATE gilstate_save = PyGILState_Ensure();
   discb (client, NULL);
+  PyGILState_Release(gilstate_save);
 
   bufferevent_free (client->buf_ev);
   close (client->fd);
@@ -105,11 +119,11 @@ void callback_client_connect (int fd, short ev, void *arg)
       warn ("accept failed");
       return;
     }
-
   /* Set the client socket to non-blocking mode. */
   if (setnonblock(client_fd) < 0)
     warn("failed to set client socket non-blocking");
 
+  PyGILState_STATE gilstate_save = PyGILState_Ensure();
   if (!conncb (NULL, inet_ntoa (client_addr.sin_addr)))
     {
       client_t * client = malloc (sizeof (struct client));
@@ -127,10 +141,12 @@ void callback_client_connect (int fd, short ev, void *arg)
     }
   else
     close (client_fd);
+  PyGILState_Release(gilstate_save);
 }
 
 void init_server (int port)
 {
+  printf ("starting server!\n");
   int sockfd;
   struct sockaddr_in serv_addr;
 
@@ -182,6 +198,10 @@ void init_server (int port)
 		NULL);
   event_add (&ev_accept, NULL);
 
+  /* catch SIGINT so that event.fifo can be cleaned up */
+  struct event *signal_int = evsignal_new (evbase, SIGINT,
+					   &sigint_cb, evbase);
+  event_add (signal_int, NULL);
   /* Start the event loop. */
   event_base_dispatch (evbase);
 }
