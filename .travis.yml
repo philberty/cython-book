@@ -1,0 +1,16 @@
+language: cpp
+compiler:
+  - gcc
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq cython python-dev automake libtool autoconf
+script: ./travis-build.sh
+branches:
+  only:
+    - master
+notifications:
+  recipients:
+    - redbrain@gcc.gnu.org
+  email:
+    on_success: change
+    on_failure: always

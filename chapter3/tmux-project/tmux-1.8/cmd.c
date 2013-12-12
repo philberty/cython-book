@@ -113,7 +113,11 @@ const struct cmd_entry *cmd_table[] = {
 	&cmd_unbind_key_entry,
 	&cmd_unlink_window_entry,
 	&cmd_wait_for_entry,
+        
+        #ifdef HAVE_PYTHON
 	&cmd_entry_python,
+        #endif
+        
 	NULL
 };
 

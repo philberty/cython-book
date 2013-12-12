@@ -1,48 +1,36 @@
 #include "main.h"
 
-void cinfo (const char * file, unsigned line,
-            const char * fmt, ...)
+#define LOG_BUFFER_SIZE 256
+
+void cdiag (LOG_LEVEL level, const char * file,
+            unsigned line, const char * fmt, ...)
 {
-  char buffer [256];
-  va_list args;
-  va_start (args, fmt);
-  vsprintf (buffer, fmt, args);
-  va_end (args);
+    char * buffer = alloca (LOG_BUFFER_SIZE);
+    memset (buffer, 0, LOG_BUFFER_SIZE);
 
-  char buf [512];
-  snprintf (buf, sizeof (buf), "%s-%i -> %s",
-            file, line, buffer);
-  pyinfo (buf);
-}
+    va_list args;
+    va_start (args, fmt);
+    vsprintf (buffer, fmt, args);
+    va_end (args);
+    
+    char * buffer_message = alloca (LOG_BUFFER_SIZE);
+    memset (buffer_message, 0, LOG_BUFFER_SIZE);
+    snprintf (buffer_message, LOG_BUFFER_SIZE, "%s:%i [%s]", file, line, buffer);
 
-void cdebug (const char * file, unsigned line,
-             const char * fmt, ...)
-{
-  char buffer [256];
-  va_list args;
-  va_start (args, fmt);
-  vsprintf (buffer, fmt, args);
-  va_end (args);
+    switch (level)
+    {
+    case INFO:
+        pyinfo (buffer_message);
+        break;
 
-  char buf [512];
-  snprintf (buf, sizeof (buf), "%s-%i -> %s",
-            file, line, buffer);
-  pydebug (buf);
-}
+    case DEBUG:
+        pydebug (buffer_message);
+        break;
 
-void cerror (const char * file, unsigned line,
-             const char * fmt, ...)
-{
-  char buffer [256];
-  va_list args;
-  va_start (args, fmt);
-  vsprintf (buffer, fmt, args);
-  va_end (args);
-
-  char buf [512];
-  snprintf (buf, sizeof (buf), "%s-%i -> %s",
-            file, line, buffer);
-  pyerror (buf);
+    case ERROR:
+        pyerror (buffer_message);
+        break;
+    }
 }
 
 int main (int argc, char ** argv)
@@ -59,9 +47,9 @@ int main (int argc, char ** argv)
       /* call directly into our cython module parseConfig */
       initLogging (argv [1]);
 
-      info ("info message");
-      debug ("debug message");
-      error ("error message");
+      info ("info message with string [%s]", argv [0]);
+      debug ("debug message with integer [%i]", 7);
+      error ("error message with nothing..");
     }
   else
     printf ("require path to output logfile...\n");

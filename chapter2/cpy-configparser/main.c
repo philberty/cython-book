@@ -1,8 +1,6 @@
 #include "main.h"
 
-static void printConfig (struct config *);
-
-static void printConfig (struct config * cfg)
+static void printConfig (const struct config * cfg)
 {
   printf ("cfg->path = %s\n", cfg->path);
   printf ("cfg-number = %i\n", cfg->number);

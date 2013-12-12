@@ -14,6 +14,8 @@
 #+LINK_HOME: 
 #+XSLT:
 
+[[https://travis-ci.org/redbrain/cython-book.png?branch=master]]
+
 * Learning Cython README
 These are all the cython code examples used within the book for easy
 reference and for me to be able to maintain these in the future. To

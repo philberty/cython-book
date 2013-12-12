@@ -6,7 +6,6 @@ cdef class A:
 cdef class B (A):
      pass
 
-def myfunc ():
-    cdef A class1 = A ()
-    cdef B class2 = B ()
-    cdef B x = <B?> class1
+cdef A class1 = A ()
+cdef B class2 = B ()
+cdef B x = <B?> class1

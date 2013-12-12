@@ -7,6 +7,6 @@ struct mystruct {
   char ** string_array;
 };
 
-extern void printStruct (struct mystruct *);
+extern void printStruct (/*const*/ struct mystruct *);
 
 #endif //__MYCODE_H__

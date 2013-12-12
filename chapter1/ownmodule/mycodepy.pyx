@@ -3,3 +3,5 @@ cdef extern from "mycode.h":
 
 def callCfunc ():
     print myfunc (1,2)
+
+callCfunc ()
