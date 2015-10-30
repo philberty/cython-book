@@ -14,6 +14,3 @@ def testStruct ():
     array [1] = "bar"
     s.string_array = array
     printStruct (&s)
-
-if __name__ == "__main__":
-    testStruct ()
