@@ -4,8 +4,14 @@ from libc.stdlib cimport malloc, free
 cdef class Data(object):
     cdef PyData.data_t * _nativeData
 
-    def __cinit__(self, int value):
+    def __init__(self, int value):
         self.SetValue(value)
+    
+    def __cinit__(self):
+        self._nativeData = <data_t*>malloc(sizeof(data_t))
+        if not self._nativeData:
+            self._nativeData = NULL
+            raise MemoryError()
     
     def __dealloc__(self):
         if self._nativeData is not NULL:
@@ -18,12 +24,7 @@ cdef class Data(object):
         else:
             return "Object not initilized!"
 
-    cpdef SetNativeValue(self, int value):
-        if self._nativeData is NULL:
-            self._nativeData = <data_t*>malloc(sizeof(data_t))
-            if not self._nativeData:
-                self._nativeData = NULL
-                raise MemoryError()
+    cdef SetNativeValue(self, int value):
         self._nativeData.value = value
         
     @property
