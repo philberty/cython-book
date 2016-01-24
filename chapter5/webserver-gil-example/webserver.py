@@ -1,21 +1,35 @@
-from twisted.web import server, resource
-from twisted.internet import reactor
+from flask import Flask
+from flask import jsonify
 
-DATA = None
+app = Flask("DashboardExample")
+dashboard = None
 
-class Simple (resource.Resource):
-    isLeaf = True
-    def render_GET (self, request):
-        global DATA
-        resp = "<html>Messaging Server Stats<ol>"
-        for i in DATA.getClients ():
-            resp += ("<li>" + i + "</li>")
-        resp += "</ol></html>"
-        return resp
+@app.route("/")
+def status():
+    return jsonify(dashboard.roster.client_list())
 
-def WebServer (port, roster):
-    global DATA
-    DATA = roster
-    site = server.Site (Simple())
-    reactor.listenTCP (port, site)
-    reactor.run ()
+class Dashboard:
+    
+    _port = None
+    _roster = None
+
+    def __init__(self, port, roster):
+        global dashboard
+        self._port = port
+        self._roster = roster
+        dashboard = self
+
+    @property
+    def port(self):
+        return self._port
+
+    @property
+    def roster(self):
+        return self._roster
+
+    def start(self):
+        app.run(port=self.port)
+
+
+if __name__ == "__main__":
+    Dashboard(8080, None).start()
