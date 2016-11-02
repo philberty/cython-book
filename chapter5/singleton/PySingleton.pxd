@@ -1,4 +1,4 @@
-cdef extern from "Singleton.h" namespace "CythonBook":
+cdef extern from "Singleton.h":
 
     cdef cppclass MySingleton:
         
