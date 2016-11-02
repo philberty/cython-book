@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-import PySingleton
+import PySingleton as cpplib
 
-test = PySingleton.PyMySingleton()
-print test.getValue()
+test = cpplib.PyMySingleton.getInstance()
+
+print test.value
+test.value = 5678
+print test.value
+
+print test.doSomething(1)

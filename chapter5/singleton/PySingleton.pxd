@@ -6,4 +6,8 @@ cdef extern from "Singleton.h" namespace "CythonBook":
         MySingleton& getInstance()
     
         int getValue()
+        
+        void setValue(int val)
+
+        int doSomething(int val)
 

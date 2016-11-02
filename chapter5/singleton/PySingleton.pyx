@@ -9,15 +9,32 @@ cdef class CpyMySingleton:
     def __cinit__(self):
         self._thisptr = &(MySingleton.getInstance())
 
-    def getValue(self):
+    @property
+    def value(self):
         return self._thisptr.getValue()
+
+    @value.setter
+    def value(self, val):
+        self._thisptr.setValue(val)
+
+    def doSomething(self, val):
+        return self._thisptr.doSomething(val)
 
 
 # this is a proxy class to allow for usage within full python
 class PyMySingleton:
-    
-    def __init__(self):
-        self._wrapped = CpyMySingleton()
-        
-    def getValue(self):
-        return self._wrapped.getValue()
+
+    __instance = CpyMySingleton()
+
+    @staticmethod
+    def getInstance():
+        return PyMySingleton()
+
+    def __getattr__(self, attr):
+        """ Delegate access to implementation """
+        return getattr(self.__instance, attr)
+
+    def __setattr__(self, attr, value):
+        """ Delegate access to implementation """
+        return setattr(self.__instance, attr, value)
+                    
