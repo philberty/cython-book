@@ -10,7 +10,7 @@ branches:
     - master
 notifications:
   recipients:
-    - redbrain@gcc.gnu.org
+    - herron.philip@googlemail.com
   email:
     on_success: change
     on_failure: always
